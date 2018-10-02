@@ -514,7 +514,7 @@ print_io() {
 }
 
 print_system_info() {
-	echo -e " IP Address           : `curl -s https://picloud.xyz/?IP_ONLY`" | tee -a $log
+	echo -e " IP Address           : ${YELLOW}`curl -s https://picloud.xyz/?IP_ONLY`${PLAIN}" | tee -a $log
 	echo -e " CPU Model            : ${SKYBLUE}$cname${PLAIN}" | tee -a $log
 	echo -e " CPU Cores            : ${YELLOW}$cores Cores ${SKYBLUE}@ $freq MHz $arch${PLAIN}" | tee -a $log
 	echo -e " CPU Cache            : ${SKYBLUE}$corescache ${PLAIN}" | tee -a $log
