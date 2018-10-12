@@ -1,0 +1,15 @@
+# Python3 support
+sudo apt-get install python{,3}-pip
+sudo pip3 install RPi.GPIO
+
+# GPIO.setwarnings(False)
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+GPIO.output(18, True)
+GPIO.output(18, False)
+
+# RTSP
+apt install vlc -y
+raspivid -o - -t 0 -hf -w 640 -h 360 -fps 25 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264
+# rtsp://rpi_with_camera_ip_address:8554/
