@@ -1,5 +1,4 @@
 # nano /etc/sysctl.conf
-# append following
 
 ## BBR
 net.core.default_qdisc=fq
