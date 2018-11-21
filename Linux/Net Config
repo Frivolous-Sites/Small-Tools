@@ -1,6 +1,12 @@
 # nano /etc/sysctl.conf
 # append following
+
+## BBR
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
+
+## Block ping
+net.ipv4.icmp_echo_ignore_all=1
+
 # sysctl -p
 # lsmod | grep bbr
