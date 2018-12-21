@@ -1,0 +1,5 @@
+# Create an empty file
+fallocate -l 100M 100
+
+# Delete all .xml files
+find . -name "*.xml" -type f -delete
