@@ -49,7 +49,7 @@ protected void btncmd_Click(object sender, EventArgs e)
          <asp:Button ID="btncmd" runat="server" onclick="btncmd_Click"  Text="运行" style="width:85px" />
          <br /><br /><br />
          <code style="margin: auto; text-align: left; display:block; background-color: #727272; color: #68ffa7; max-width: 56%; padding-left: 2em; padding-bottom: 1.5em; padding-top: 0.5em;">
-         <asp:Label ID="cmdMessage" runat="server" />
+         <asp:Label ID="cmdMessage" Text="PowerShell已激活；正在等待命令……" runat="server" />
          </code>
       </div>
       
