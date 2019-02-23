@@ -1,0 +1,6 @@
+# Add multiple IPv6 addresses in the same interface.
+iface ethxxx inet6 static
+        address 2001:x:x:x::2
+        netmask 64
+        up ip -6 addr add 2001:x:x:x::a/64 dev $IFACE
+        down ip -6 addr del 2001:x:x:x::a/64 dev $IFACE
