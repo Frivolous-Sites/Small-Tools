@@ -4,3 +4,7 @@ iface ethxxx inet6 static
         netmask 64
         up ip -6 addr add 2001:x:x:x::a/64 dev $IFACE
         down ip -6 addr del 2001:x:x:x::a/64 dev $IFACE
+
+
+# Restart /etc/network/interfaces: 
+# systemctl restart networking
