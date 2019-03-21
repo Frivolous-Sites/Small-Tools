@@ -1,0 +1,17 @@
+Modify functions.php
+
+# Custom Login Logo:
+/**
+ * Login Image
+ */
+function my_login_logo_one() {
+?>
+<style type="text/css">
+body.login div#login h1 a {
+background-image: url(/wp-content/uploads/2019/03/cropped-Favicon-150x150.png);
+border-radius: 50%;
+}
+</style>
+<?php
+} add_action( 'login_enqueue_scripts', 'my_login_logo_one' );
+/* END */
