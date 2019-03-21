@@ -1,0 +1,6 @@
+# Modify wp-includes/widgets/class-wp-widget-meta.php
+
+# 17:
+'description'                 => __( 'Login, &amp; RSS.' ),
+
+# 72 - 81
