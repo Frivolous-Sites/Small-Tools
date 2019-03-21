@@ -15,3 +15,60 @@ border-radius: 50%;
 <?php
 } add_action( 'login_enqueue_scripts', 'my_login_logo_one' );
 /* END */
+
+# Filter Comments:
+/**
+ * Filter HTML Comments
+ */
+remove_filter( 'comment_text', 'make_clickable', 9 );
+
+function  comment_code_filter($incoming_comment) {
+    $incoming_comment = htmlspecialchars($incoming_comment,ENT_QUOTES);
+    $incoming_comment = preg_replace_callback('/\bpiimg:\/\/\S+(?:.png|.jpeg|.jpg|.gif|.webp|.PNG|.JPEG|.JPG|.GIF)\b/', 'piimg_to_html', $incoming_comment);
+    return $incoming_comment;
+}
+add_filter( 'comment_text','comment_code_filter');
+add_filter( 'comment_text_rss','comment_code_filter');
+/* END */
+
+/**
+ * Convert piimg Link to HTML
+ */
+function piimg_to_html($piimgLinkArray) {
+    $piimgLink = $piimgLinkArray[0];
+    if ($piimgLink[8] !== '/') {
+        $parsedURL = parse_url($piimgLink);
+        $parsedURLHost = $parsedURL['host'];
+        if (strpos($parsedURLHost, ',') !== false) {
+            $splitHost = explode(',', $parsedURLHost);
+            if (ctype_digit($splitHost[0]) && ctype_digit($splitHost[1])) {
+                $URLOtherParts = substr($piimgLink, 8);
+                $OGImgLink = 'https://'.explode('/', $URLOtherParts, 2)[1];
+            } else {
+                $returnOriginalLink = 'True';
+            }
+        } else {
+            $OGImgLink = 'https://'.substr($piimgLink, 8);
+        }
+        if (!filter_var($OGImgLink, FILTER_VALIDATE_URL)) {
+            $returnOriginalLink = 'True';
+        }
+    } else {
+        $returnOriginalLink = 'True';
+    }
+    if ($returnOriginalLink === 'True') {
+        $returnHTML = $piimgLink;
+    } else {
+        if (isset($splitHost[0]) && isset($splitHost[1])) {
+            if (isset($splitHost[2])) {
+                $returnHTML = '<img src="'.$OGImgLink.'" alt="'.$splitHost[2].'" height="'.$splitHost[1].'" width="'.$splitHost[0].'" />';
+            } else {
+                $returnHTML = '<img src="'.$OGImgLink.'" height="'.$splitHost[1].'" width="'.$splitHost[0].'" />';
+            }
+        } else {
+            $returnHTML = '<img src="'.$OGImgLink.'" />';
+        }
+    }
+    return $returnHTML;
+}
+/* END */
