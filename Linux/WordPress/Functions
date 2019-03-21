@@ -61,9 +61,9 @@ function piimg_to_html($piimgLinkArray) {
     } else {
         if (isset($splitHost[0]) && isset($splitHost[1])) {
             if (isset($splitHost[2])) {
-                $returnHTML = '<img src="'.$OGImgLink.'" alt="'.$splitHost[2].'" height="'.$splitHost[1].'" width="'.$splitHost[0].'" />';
+                $returnHTML = '<img src="'.$OGImgLink.'" alt="'.$splitHost[2].'" style="max-height:'.$splitHost[1].';max-width='.$splitHost[0].';" />';
             } else {
-                $returnHTML = '<img src="'.$OGImgLink.'" height="'.$splitHost[1].'" width="'.$splitHost[0].'" />';
+                $returnHTML = '<img src="'.$OGImgLink.'" style="max-height:'.$splitHost[1].';max-width='.$splitHost[0].';" />';
             }
         } else {
             $returnHTML = '<img src="'.$OGImgLink.'" />';
