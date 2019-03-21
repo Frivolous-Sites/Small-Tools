@@ -1,0 +1,7 @@
+Modify wp-includes/general-template.php
+
+# 264:
+$link = '<a href="' . esc_url( wp_login_url( $redirect ) ) . '">' . __( 'Log In' ) . '</a>';
+
+# 266
+$link = '<a href="' . esc_url( wp_logout_url( $redirect ) ) . '">' . __( 'Log Out' ) . '</a>';
