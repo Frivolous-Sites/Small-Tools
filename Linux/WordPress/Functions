@@ -41,12 +41,12 @@ function piimg_to_html($piimgLinkArray) {
         $parsedURLHost = $parsedURL['host'];
         if (strpos($parsedURLHost, ',') !== false) {
             $splitHost = explode(',', $parsedURLHost);
-            if (ctype_digit($splitHost[0]) && ctype_digit($splitHost[1])) {
+            if ((strlen($splitHost[0]) > 2 && strlen($splitHost[1]) > 2 && ctype_digit(substr($splitHost[0], 0, -2)) && ctype_digit(substr($splitHost[1], 0, -2))) || (ctype_digit($splitHost[0]) && ctype_digit($splitHost[1]))) {
                 $URLOtherParts = substr($piimgLink, 8);
                 $OGImgLink = 'https://'.explode('/', $URLOtherParts, 2)[1];
             } else {
                 $returnOriginalLink = 'True';
-            }
+            }            
         } else {
             $OGImgLink = 'https://'.substr($piimgLink, 8);
         }
