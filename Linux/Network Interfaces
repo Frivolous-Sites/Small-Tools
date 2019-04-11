@@ -9,9 +9,9 @@ iface ethxxx inet6 static
 
 # Debian 9
 iface ens3 inet6 static
-address 2001:x:x:x::2
-netmask 64
-up /sbin/ip -6 addr add dev ens3 2001:x:x:x::a
+        address 2001:x:x:x::2
+        netmask 64
+        up /sbin/ip -6 addr add dev ens3 2001:x:x:x::a
 
 # Restart /etc/network/interfaces: 
 # systemctl restart networking
