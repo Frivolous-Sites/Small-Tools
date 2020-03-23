@@ -1,36 +1,46 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import os
+import os, sys
 from datetime import datetime
-from re import findall
+from re import findall, match
 from secrets import token_hex
 
-currentTime = datetime.today()
-timeString = str(currentTime.strftime('%Y%m%d'))
+if sys.argv[1] == "-d":
+	with open('GeoIP.acl', 'r') as zone_file:
+		zoneData = zone_file.readlines()
+		for i in range(len(zoneData)):
+			if match(r'[ \t]', zoneData[i]):
+				zoneData[i] = '\tecs ' + zoneData[i].lstrip()
 
-baseDir = "zones/"
-subDir=[]
-subDir = [f for f in sorted(os.listdir(baseDir))]
+	with open('GeoIP.acl', 'w') as zone_file:
+		zone_file.writelines(zoneData)
+else:
+	currentTime = datetime.today()
+	timeString = str(currentTime.strftime('%Y%m%d'))
 
-for sub_dir in subDir:
-	for zoneFile in os.listdir(baseDir + sub_dir):
-		if zoneFile.endswith(".db"):
-			with open(baseDir + sub_dir + "/" + zoneFile, 'r') as zone_file:
-				zoneData = zone_file.readlines()
-				zoneSerials = findall(r'\b\d{10}\b', zoneData[9])
-				zoneSerial = str(zoneSerials[0])
-				if zoneSerial[:8] == timeString:
-					serialSerial = str(int(zoneSerial[-2:]) + 1).zfill(2)
-					newSerial = timeString + serialSerial
-				else:
-					newSerial = timeString + "00"
-				zoneData[9] = zoneData[9].replace(zoneSerial, newSerial)
-			with open(baseDir + sub_dir + "/" + zoneFile, 'w') as zone_file:
-				zone_file.writelines(zoneData)
-			os.chdir(baseDir + sub_dir)
-			os.system('dnssec-signzone -A -3 ' + str(token_hex(8)).upper() + ' -N INCREMENT -o ' + sub_dir + ' -t ' + zoneFile)
-			os.chdir('../../')
+	baseDir = "zones/"
+	subDir=[]
+	subDir = [f for f in sorted(os.listdir(baseDir))]
+
+	for sub_dir in subDir:
+		for zoneFile in os.listdir(baseDir + sub_dir):
+			if zoneFile.endswith(".db"):
+				with open(baseDir + sub_dir + "/" + zoneFile, 'r') as zone_file:
+					zoneData = zone_file.readlines()
+					zoneSerials = findall(r'\b\d{10}\b', zoneData[9])
+					zoneSerial = str(zoneSerials[0])
+					if zoneSerial[:8] == timeString:
+						serialSerial = str(int(zoneSerial[-2:]) + 1).zfill(2)
+						newSerial = timeString + serialSerial
+					else:
+						newSerial = timeString + "00"
+					zoneData[9] = zoneData[9].replace(zoneSerial, newSerial)
+				with open(baseDir + sub_dir + "/" + zoneFile, 'w') as zone_file:
+					zone_file.writelines(zoneData)
+				os.chdir(baseDir + sub_dir)
+				os.system('dnssec-signzone -A -3 ' + str(token_hex(8)).upper() + ' -N INCREMENT -o ' + sub_dir + ' -t ' + zoneFile)
+				os.chdir('../../')
 
 # Before you start,
 # please make sure that your zone file ends with ".db" and placed under the directory which name is the domain itself.
