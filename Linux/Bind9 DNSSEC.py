@@ -7,16 +7,28 @@ from re import findall, match
 from secrets import token_hex
 
 if sys.argv[1] == "-d":
+	GeoIP_Countries = ["US"]
 	with open('GeoIP.acl', 'r') as zone_file:
 		zoneData = zone_file.readlines()
 		for i in range(len(zoneData)):
 			if match(r'[ \t]', zoneData[i]):
 				zoneData[i] = '\tecs ' + zoneData[i].lstrip()
 			elif zoneData[i].startswith('acl'):
-				zoneData[i] = 'acl "ecs_' + zoneData[i][4:6] + '" {\n'
+				if zoneData[i][4:6] in GeoIP_Countries:
+					zoneData[i] = 'acl "ecs_' + zoneData[i][4:6] + '" {\n\tkey Transfer_' + zoneData[i][4:6] + ';\n'
+				else:
+					zoneData[i] = 'acl "ecs_' + zoneData[i][4:6] + '" {\n'
 
 	with open('ecs_GeoIP.acl', 'w') as zone_file:
 		zone_file.writelines(zoneData)
+# Above code generates GeoIP acl which support ecs (EDNS Client-Subnet).
+# Assuming the original file is GeoIP.acl (https://geoip.site/), we are going to create ecs_GeoIP.acl
+
+# `GeoIP_Countries` list includes countries that are not in default view.
+# This script assumes that you are using key auth between masters and slaves.
+# The key has "Transfer_XX" name (e.g., Transfer_US)
+# Therefore, if the country is in `GeoIP_Countries` list, its acl block will include the key file (aka, key Transfer_US;).
+
 else:
 	currentTime = datetime.today()
 	timeString = str(currentTime.strftime('%Y%m%d'))
