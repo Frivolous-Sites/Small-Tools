@@ -12,8 +12,10 @@ if sys.argv[1] == "-d":
 		for i in range(len(zoneData)):
 			if match(r'[ \t]', zoneData[i]):
 				zoneData[i] = '\tecs ' + zoneData[i].lstrip()
+			elif zoneData[i].startswith('acl'):
+				zoneData[i] = 'acl "ecs_' + zoneData[i][4:6] + '" {\n'
 
-	with open('GeoIP.acl', 'w') as zone_file:
+	with open('ecs_GeoIP.acl', 'w') as zone_file:
 		zone_file.writelines(zoneData)
 else:
 	currentTime = datetime.today()
