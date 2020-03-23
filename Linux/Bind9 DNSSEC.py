@@ -21,6 +21,7 @@ else:
 	currentTime = datetime.today()
 	timeString = str(currentTime.strftime('%Y%m%d'))
 
+	os.chdir('/etc/bind')
 	baseDir = "zones/"
 	subDir=[]
 	subDir = [f for f in sorted(os.listdir(baseDir))]
