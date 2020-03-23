@@ -21,13 +21,20 @@ if sys.argv[1] == "-d":
 
 	with open('ecs_GeoIP.acl', 'w') as zone_file:
 		zone_file.writelines(zoneData)
-# Above code generates GeoIP acl which support ecs (EDNS Client-Subnet).
+
+# Above code generates GeoIP acl which supports ecs (EDNS Client-Subnet).
 # Assuming the original file is GeoIP.acl (https://geoip.site/), we are going to create ecs_GeoIP.acl
 
 # `GeoIP_Countries` list includes countries that are not in default view.
 # This script assumes that you are using key auth between masters and slaves.
 # The key has "Transfer_XX" name (e.g., Transfer_US)
 # Therefore, if the country is in `GeoIP_Countries` list, its acl block will include the key file (aka, key Transfer_US;).
+# Generate key: dnssec-keygen -a HMAC-SHA512 -b 512 -n HOST -r /dev/urandom Transfer_XX
+# Key config:
+#key "Transfer_XX" {
+#algorithm HMAC-SHA512;
+#secret "CONTENT_IN_Ktransfer_xx.*.private";
+#};
 
 else:
 	currentTime = datetime.today()
