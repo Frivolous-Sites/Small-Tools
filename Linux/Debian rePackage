@@ -1,0 +1,16 @@
+1. get xxxx.deb
+apt download xxxx
+
+2. extract xxxx.deb
+ar x xxxx.deb && ls
+
+3. extract control.tar.xz
+tar -xf control.tar.xz && rm -R control.tar.xz && ls
+
+4. modify control/postrm/...
+
+5. regenerate control.tar.xz
+tar cfJ control.tar.xz
+
+6. create new xxxx-new.deb
+ar rcs xxxx-new.deb debian-binary control.tar.xz data.tar.xz
