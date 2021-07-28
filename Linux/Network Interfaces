@@ -13,11 +13,13 @@ auto ens3:1
 iface ens3 inet6 static
         address 2001:x:x:x::2
         netmask 64
+        gateway 2001:x:x:x::1
         metric 100
         up /sbin/ip -6 addr add dev ens3 2001:x:x:x::a
 iface ens3:1 inet6 static
         address 2001:x:x:y::2
         netmask 64
+        gateway 2001:x:x:y::1
         metric 200
         up /sbin/ip -6 addr add dev ens3 2001:x:x:y::a
 
