@@ -1,0 +1,18 @@
+let pageContent = document.body.innerText;
+
+// Regex to match "Reportable Proceeds: $7.5", etc.
+const regex = /Reportable Proceeds:\s?\$(\d+\.?\d*)/g;
+
+// Extract and collect numbers
+let reportableProceeds = [];
+let match;
+
+while ((match = regex.exec(pageContent)) !== null) {
+  reportableProceeds.push(parseFloat(match[1]));
+}
+
+// Sum the numbers
+let total = reportableProceeds.reduce((sum, value) => sum + value, 0);
+
+console.log("Extracted values:", reportableProceeds);
+console.log("Total Reportable Proceeds:", total);
